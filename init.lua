@@ -44,6 +44,9 @@ vim.opt.expandtab = true -- Convert tabs to spaces
 -- See `:help vim.opt`
 -- For more options, you can see `:help option-list`
 
+-- Make Tab do nothing in Normal mode
+vim.keymap.set('n', '<Tab>', '<Nop>')
+
 -- Make line numbers default
 vim.opt.number = true
 
@@ -218,7 +221,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Install plugins.
 require('lazy').setup({
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   {
     'sevko/vim-nand2tetris-syntax',
