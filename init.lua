@@ -44,12 +44,25 @@ vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 
--- Treat Arduino files as C++
+-- Treat Arduino files like C++ without activating clangd
 vim.filetype.add {
   extension = {
-    ino = 'cpp',
+    ino = 'arduino',
   },
 }
+
+-- Use C++ Treesitter highlighting for Arduino
+vim.treesitter.language.register('cpp', 'arduino')
+
+-- Use C++-style indentation and comments
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'arduino',
+  callback = function()
+    vim.bo.cindent = true
+    vim.bo.commentstring = '// %s'
+  end,
+})
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- For more options, you can see `:help option-list`
