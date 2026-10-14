@@ -40,6 +40,16 @@ vim.opt.shiftwidth = 4 -- How many spaces for each indent level
 vim.opt.softtabstop = 4 -- How many spaces when pressing <Tab>
 vim.opt.expandtab = true -- Convert tabs to spaces
 
+-- Improve default indentation behavior when creating new lines
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+
+-- Treat Arduino files as C++
+vim.filetype.add {
+  extension = {
+    ino = 'cpp',
+  },
+}
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- For more options, you can see `:help option-list`
@@ -163,6 +173,16 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- Use Vim's built-in C-style indentation rules for C and C++ buffers
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'cpp' },
+  callback = function()
+    vim.opt_local.cindent = true
+    vim.opt_local.smartindent = true
+    vim.opt_local.autoindent = true
+  end,
+})
+
 -- Remove auto-commenting on new lines
 vim.api.nvim_create_autocmd('FileType', {
   pattern = '*',
@@ -222,11 +242,6 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Install plugins.
 require('lazy').setup({
   -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
-  {
-    'sevko/vim-nand2tetris-syntax',
-    ft = { 'hdl', 'jack', 'asm' }, -- Lazy-load on Nand2Tetris filetypes
-  },
 
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -977,7 +992,7 @@ require('lazy').setup({
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = { 'ruby', 'c', 'cpp' } },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
